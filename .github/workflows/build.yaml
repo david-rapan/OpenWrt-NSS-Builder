@@ -71,6 +71,8 @@ jobs:
       - name: Update and install feeds
         run: |
           ./scripts/feeds update -a
+          cp package/kernel/mac80211/patches/nss/ath11k/207-ath11k-Add-support-for-dynamic-vlan.patch package/kernel/mac80211/patches/ath11k/207-ath11k-Add-support-for-dynamic-vlan.patch
+          cp package/kernel/mac80211/patches/nss/subsys/207-ath11k-Add-support-for-dynamic-vlan.patch package/kernel/mac80211/patches/subsys/207-ath11k-Add-support-for-dynamic-vlan.patch
           ./scripts/feeds install -a
       - name: Apply NSS Status patch
         run: |
