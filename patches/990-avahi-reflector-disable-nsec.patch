@@ -1,0 +1,14 @@
+--- a/avahi-core/server.c
++++ b/avahi-core/server.c
+@@ -509,7 +509,10 @@ static void reflect_response(AvahiServer *s, AvahiInterface *i, AvahiRecord *r, int flush_cache) {
+     if (!s->config.enable_reflector)
+         return;
+
+-    for (j = s->monitor->interfaces; j; j = j->interface_next)
++    if (r->key->type == 47)
++        return;
++
++    for (j = s->monitor->interfaces; j; j = j->interface_next)
+         if (j != i && (s->config.reflect_ipv || j->protocol == i->protocol))
+             avahi_interface_post_response(j, r, flush_cache, NULL, 1);
+ }
