@@ -1,0 +1,27 @@
+--- a/avahi-core/server.c
++++ b/avahi-core/server.c
+@@ -658,7 +658,23 @@ static void handle_response_packet(AvahiServer *s, AvahiDnsPacket *p, AvahiInterface *i, const AvahiAddress *a, int from_local_iface) {
+             break;
+         }
+
+-        if (!avahi_key_is_pattern(record->key)) {
++
++        int isfilterenabled = 0;
++
++        if (!from_local_iface && s->config.enable_reflector && s->config.reflect_filters != NULL) {
++            AvahiStringList *l;
++
++            isfilterenabled = 1;
++
++            for (l = s->config.reflect_filters; l; l = l->next) {
++                if (strstr(record->key->name, (char*) l->text) == NULL) {
++                    avahi_log_debug("Reject match [%s] iface [%d]", record->key->name, from_local_iface);
++                    goto unref;
++                }
++            }
++        }
++
++        if (!isfilterenabled && !avahi_key_is_pattern(record->key)) {
+             /* Filter services that will be cached. Allow all local services */
+             if (!from_local_iface && s->config.enable_reflector && s->config.reflect_filters != NULL) {
+                AvahiStringList *l;
