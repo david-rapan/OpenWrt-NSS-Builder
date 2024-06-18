@@ -1,0 +1,21 @@
+--- a/m4/curl-openssl.m4
++++ b/m4/curl-openssl.m4
+@@ -431,7 +431,7 @@ if test "$OPENSSL_ENABLED" = "1"; then
+   AC_MSG_CHECKING([for QUIC support in OpenSSL])
+   AC_LINK_IFELSE([
+     AC_LANG_PROGRAM([[
+-#include <openssl/ssl.h>
++#include <openssl/quic.h>
+     ]],[[
+       OSSL_QUIC_client_method();
+     ]])
+--- a/lib/vtls/openssl.c
++++ b/lib/vtls/openssl.c
+@@ -65,6 +65,7 @@
+ #include "curl_printf.h"
+
+ #include <openssl/ssl.h>
++#include <openssl/quic.h>
+ #include <openssl/rand.h>
+ #include <openssl/x509v3.h>
+ #ifndef OPENSSL_NO_DSA
